@@ -1,0 +1,2 @@
+class GameNode
+end

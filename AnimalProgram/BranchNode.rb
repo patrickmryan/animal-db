@@ -1,0 +1,2 @@
+class BranchNode < GameNode
+end
