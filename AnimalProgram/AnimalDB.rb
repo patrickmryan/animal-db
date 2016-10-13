@@ -1,5 +1,8 @@
 require 'rubygems'
 require 'couchrest'
+require './GameNode.rb'
+require './BranchNode.rb'
+require './LeafNode.rb'
 
 class AnimalDB
   #
@@ -24,18 +27,52 @@ class AnimalDB
   
   attr_accessor :animaldb, :server
 
-  def getFirstNode
-    doc = self.animaldb().get(@ROOT_ID)
-    # we know that the first actual animal node is at the left pointer of the root node
+  def getDocFromId(node_id)
 
+    puts "retrieving node with id ", node_id
+    doc = self.animaldb().get(node_id)
+    if (doc)
+      keys = ['_id', 'text', 'left_id', 'right_id']
+      keys.each do | key |
+        print key, " => ", doc[key], ", "
+      end
+      print "\n"
+    else
+      print "not found\n"
+    end
+
+    return doc
+
+  end
+  
+  def getNodeFromId(node_id)
+    doc = self.getDocFromId(node_id)
+    if (doc)
+      return self.nodeFromDoc(doc)
+    else
+      return nil
+    end
+  end
+  
+  def nodeFromDoc(doc)
+    node = nil
+    if (doc['left_id'] || doc['right_id'])  
+      # if either of these is nonempty, then this is a branch
+      node = BranchNode.new()
+    else
+      node = LeafNode.new()
+    end
     
-    #keys = ['_id', 'text', 'left_id', 'right_id']
-    #keys.each do | key |
-    #  print key, " => ", doc[key], ", "
-    #end
-    #print "\n"    
-    #exit
+    node.id=(doc['_id'])
+    node.left_id=(doc['left_id'])
+    node.right_id=(doc['right_id'])
+    node.text=(doc['text'])
+    return node
     
+  end
+  
+  def getRootNode
+    return self.getNodeFromId(@ROOT_ID)
     
   end
 
@@ -73,7 +110,7 @@ class AnimalDB
     
     self.openDB()
     
-    node0_doc = @animaldb.get(@ROOT_ID)
+    node0_doc = self.getRootNode()
     if (node0_doc == nil)
       puts "node 0 not found, creating new tree"
       self.createNewTree()

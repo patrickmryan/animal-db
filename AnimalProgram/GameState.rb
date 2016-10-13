@@ -1,10 +1,10 @@
 class GameState
   def initialize
-    @current_node_id = nil
-    @parent_node_id = nil
+    @current_node = nil
+    @parent_node = nil
   end
   
-  attr_reader :current_node_id, :parent_node_id
+  attr_accessor :current_node, :parent_node
   
 
   

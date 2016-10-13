@@ -1,3 +1,5 @@
+require './AnimalDB.rb'
+
 class GameNode
   def initialize
     @id = 0
@@ -7,8 +9,19 @@ class GameNode
     @text = ''
   end
   
-  attr :id, :left_id, :right_id, :parent_id, :text
+  attr_accessor :id, :left_id, :right_id, :parent_id, :text
   
+  def printString
+    return "{id = @id, left_id = @left_id, right_id = @right_id, text = @text, parent_id = @parent_id"
+  end
   
-  
+  def getLeftNodeFromDB(db)
+    return db.getNodeFromId(self.left_id())
+  end
+
+  def getRightNodeFromDB(db)
+    return db.getNodeFromId(self.right_id())
+  end
+
+    
 end

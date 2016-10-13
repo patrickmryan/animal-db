@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'couchrest'
 require './AnimalDB.rb'
+require './GameState.rb'
 
 class Game
   
@@ -9,7 +10,7 @@ class Game
     @adb = nil
   end
   
-  attr_accessor :adb
+  attr_accessor :adb, :state
   
   def initializeGame
     
@@ -17,6 +18,13 @@ class Game
     self.adb=(AnimalDB.new())
     self.adb().initializeTree()
 
+    aState = GameState.new()
+    root = self.adb().getRootNode()
+    left = root.getLeftNodeFromDB(self.adb())
+    aState.parent_node=(root)
+    aState.current_node=(left)
+    self.state=(aState)
+    
   end
   
   
