@@ -45,7 +45,7 @@ class AnimalDB
   end
 
   
-  def createNew
+  def createNewTree
     node1_id = self.next_node_id()
     node1 = {
       '_id' => node1_id,
@@ -61,16 +61,25 @@ class AnimalDB
       'right_id' => ''
     }
 
-    self.openDB()
-
-    @couchdb.save_doc(node0)
-    @couchdb.save_doc(node1)
+    @animaldb.save_doc(node0)
+    @animaldb.save_doc(node1)
     
   end
 
-  def open
+  def initializeTree
     # check to see if it exists
     # if not, initialize with basic tree
+    
+    self.openDB()
+    
+    node0_doc = @animaldb.get(@ROOT_ID)
+    if (node0_doc == nil)
+      puts "node 0 not found, creating new tree"
+      self.createNewTree()
+    else
+      puts "node 0 found, not creating new tree"
+    end
+    
   end
 
   def close
@@ -81,3 +90,14 @@ class AnimalDB
   end
   
 end
+
+
+puts "starting"
+adb = AnimalDB.new()
+adb.initializeTree()
+
+
+
+
+
+
