@@ -9,12 +9,12 @@ class Game
     @adb = nil
   end
   
-  attr_reader :adb
+  attr_accessor :adb
   
   def initializeGame
     
     #puts "starting"
-    self.adb(AnimalDB.new())
+    self.adb=(AnimalDB.new())
     self.adb().initializeTree()
 
   end

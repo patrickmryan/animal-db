@@ -22,7 +22,7 @@ class AnimalDB
     @server = nil
   end
   
-  attr_reader :animaldb, :server
+  attr_accessor :animaldb, :server
 
   def getFirstNode
     doc = self.animaldb().get(@ROOT_ID)
@@ -40,7 +40,7 @@ class AnimalDB
   end
 
   def openDB
-    self.server(CouchRest.new())
+    self.server=(CouchRest.new())
     @animaldb = self.server().database!(@ANIMALDB_NAME)
 
   end
