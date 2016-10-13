@@ -19,9 +19,10 @@ class AnimalDB
     @ANIMALDB_NAME = 'animal_db'
     @ROOT_ID = '0'
     @animaldb = nil
+    @server = nil
   end
   
-  attr_reader :animaldb
+  attr_reader :animaldb, :server
 
   def getFirstNode
     doc = self.animaldb().get(@ROOT_ID)
@@ -39,8 +40,8 @@ class AnimalDB
   end
 
   def openDB
-    server = CouchRest.new()
-    @animaldb = server.database!(@ANIMALDB_NAME)
+    self.server(CouchRest.new())
+    @animaldb = self.server().database!(@ANIMALDB_NAME)
 
   end
 
@@ -86,15 +87,20 @@ class AnimalDB
   end
 
   def next_node_id
-    return Time.now().to_f().to_s()  # time now, in milliseconds
+    ##return Time.now().to_f().to_s()  # time now, in milliseconds
+    return self.server().next_uuid()
+    
   end
+  
+  def initialState
+    state = GameState.new
+    state.current_node_id(@ROOT_ID)
+    state.parent_node_id(@ROOT_ID)
+  end
+  
   
 end
 
-
-puts "starting"
-adb = AnimalDB.new()
-adb.initializeTree()
 
 
 

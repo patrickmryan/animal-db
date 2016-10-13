@@ -1,13 +1,21 @@
 require 'rubygems'
 require 'couchrest'
-
+require './AnimalDB.rb'
 
 class Game
+  
+  def initialize
+    ##puts "initializing a Game instance"
+    @adb = nil
+  end
+  
+  attr_reader :adb
+  
   def initializeGame
     
-    puts "starting"
-    adb = AnimalDB.new()
-    adb.initializeTree()
+    #puts "starting"
+    self.adb(AnimalDB.new())
+    self.adb().initializeTree()
 
   end
   

@@ -6,4 +6,6 @@ class GameState
   
   attr_reader :current_node_id, :parent_node_id
   
+
+  
 end
