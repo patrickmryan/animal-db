@@ -25,6 +25,12 @@ class Game
     aState.current_node=(left)
     self.state=(aState)
     
+    puts self.state().printString()
+    
+  end
+  
+  def currentQuestion
+    return self.state().current_node().text()
   end
   
   
@@ -34,3 +40,9 @@ end
 game = Game.new()
 game.initializeGame()
 
+loop do
+  print game.currentQuestion() + " > "
+  
+  
+  
+end

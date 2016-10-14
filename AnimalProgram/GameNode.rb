@@ -12,7 +12,8 @@ class GameNode
   attr_accessor :id, :left_id, :right_id, :parent_id, :text
   
   def printString
-    return "{id = @id, left_id = @left_id, right_id = @right_id, text = @text, parent_id = @parent_id"
+    return self.class.name() +
+      " {id = #{@id}, left_id = #{@left_id}, right_id = #{@right_id}, text = #{@text}, parent_id = #{@parent_id}"
   end
   
   def getLeftNodeFromDB(db)
