@@ -33,6 +33,18 @@ class Game
     return self.state().current_node().text()
   end
   
+  def promptForYesNo
+    loop do
+      print " > "
+      answer = gets
+      if (answer =~ /^\s*y/i)
+        return true
+      elsif (answer =~ /^\s*n/i)
+        return false
+      end
+      puts "please answer yes or no"
+    end
+  end
   
 end
 
