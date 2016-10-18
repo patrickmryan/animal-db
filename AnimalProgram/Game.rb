@@ -46,6 +46,22 @@ class Game
     end
   end
   
+  def advanceLeft()
+    self.state().advanceTo(self.state().current_node().getLeftNodeFromDB(self.adb()))
+
+    #self.advanceTo(self.state().current_node().getLeftNodeFromDB(self.adb()))
+
+    #nextNode = self.state().current_node().getLeftNodeFromDB(self.adb())
+    #self.state.moveCurrentToParent()
+    #self.state().current_node(nextNode)    
+  end
+
+  def advanceRight()
+    self.state().advanceTo(self.state().current_node().getRightNodeFromDB(self.adb()))
+  end
+    
+
+  
 end
 
 
@@ -54,6 +70,29 @@ game.initializeGame()
 
 loop do
   print game.currentQuestion() + " > "
+  
+  
+  answeredYes = game.promptForYesNo()
+  if answeredYes
+    if (game.state().isLeaf())  # yea!  we're done!
+      puts "I guessed correctly. I must be very smart."
+    else
+      #self.play_game_from_node(current_node,current_node.getYes())
+      game.advanceLeft() 
+      
+      
+    end
+  else  # player answered no to question
+    if (!game.state().isLeaf()) # not at a leaf means we're at a branch
+      self.play_game_from_node(current_node,current_node.getNo())
+      
+    else  # uh-oh.  got to the end of the questions and did not find the animal
+      self.get_new_question_for_node(parent_node,current_node)
+
+    end
+  end  
+    
+  
   
   
   
