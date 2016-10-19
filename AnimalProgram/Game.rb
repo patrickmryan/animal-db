@@ -25,7 +25,7 @@ class Game
     aState.current_node=(left)
     self.state=(aState)
     
-    puts self.state().printString()
+    #puts self.state().printString()
     
   end
   
@@ -48,12 +48,6 @@ class Game
   
   def advanceLeft()
     self.state().advanceTo(self.state().current_node().getLeftNodeFromDB(self.adb()))
-
-    #self.advanceTo(self.state().current_node().getLeftNodeFromDB(self.adb()))
-
-    #nextNode = self.state().current_node().getLeftNodeFromDB(self.adb())
-    #self.state.moveCurrentToParent()
-    #self.state().current_node(nextNode)    
   end
 
   def advanceRight()
@@ -97,23 +91,11 @@ class Game
  
     print "\nIs this question true for " + self.wordWithArticle(newAnimalName) + "?"
     
-    #exit
     trueForNewAnimal = self.promptForYesNo()
     
     self.updateTree(newAnimalName,newQuestion,trueForNewAnimal)
     
-#    if (self.promptForYesNo())
-#      # true means question is true for the new animal
-#      newQuestionNode.setYes(newAnimalNode)
-#      newQuestionNode.setNo(lastAnimalNode)  
-#    else
-#      # false means the question is true for the existing animal
-#      newQuestionNode.setYes(lastAnimalNode)
-#      newQuestionNode.setNo(newAnimalNode)
-#    end
-#
-#    # splice the two new nodes into the tree
-#    parent.replaceExistingNodeWith(lastAnimalNode,newQuestionNode)
+
     
   end
   
@@ -123,81 +105,92 @@ class Game
     last_animal_node = self.state().current_node()
     last_question_node = self.state().parent_node()
     
-    new_animal = LeafNode.new()
+    new_animal_node = LeafNode.new()
     newAnimalId = self.adb().next_node_id()
-    new_animal.id=(newAnimalId)
-    new_animal.text=(newAnimalName)
+    new_animal_node.id=(newAnimalId)
+    new_animal_node.text=(newAnimalName)
     
-    new_question = BranchNode.new()
+    new_question_node = BranchNode.new()
     newQuestionId = self.adb().next_node_id()
-    new_question.id=(newQuestionId)
-    new_question.text=(newQuestion)
+    new_question_node.id=(newQuestionId)
+    new_question_node.text=(newQuestion)
     
-    
+#    puts "trueForNewAnimal = #{trueForNewAnimal}"
     if (trueForNewAnimal)
-      new_question.left_id=(newAnimalId)
-      new_question.right_id=(last_animal_node.id())
-      last_question_node.left_id=(newQuestionId)
+      new_question_node.left_id=(newAnimalId)
+      new_question_node.right_id=(last_animal_node.id())
     else
-      new_question.left_id=(last_animal_node.id())
-      new_question.right_id=(newAnimalId)
-      last_question_node.right_id=(newQuestionId)
+      new_question_node.left_id=(last_animal_node.id())
+      new_question_node.right_id=(newAnimalId)
     end
     
+    self.updateExistingNodeWith(last_question_node,last_animal_node,new_question_node)
+ 
     # now persist the updates
-    new_animal.createInDB(self.adb())
-    new_question.createInDB(self.adb())
+  
+    new_animal_node.createInDB(self.adb())
+    new_question_node.createInDB(self.adb())
     last_question_node.updateInDB(self.adb())
-    ##last_question_node.createInDB(self.adb())
 
+  end
+    
+  def updateExistingNodeWith(parentNode,lastNode,newQuestionNode)
+    if (lastNode.id() == parentNode.left_id())
+      parentNode.left_id=(newQuestionNode.id())
+    elsif (lastNode.id() == parentNode.right_id())
+      parentNode.right_id=(newQuestionNode.id())
+    else
+      # exception
     end
+    
+  end
   
 end
 
-
-game = Game.new()
-game.initializeGame()
-
 loop do
+  game = Game.new()
+  game.initializeGame()
+
   puts "Starting the Animal game"
-  print game.currentQuestion() + " > "
+  finishedGame = false
   
-  answeredYes = game.promptForYesNo()
-  
-  if answeredYes
-    if (game.state().isLeaf())  # yea!  we're done!
-      puts "I guessed correctly. I must be very smart."
-    else
-      #self.play_game_from_node(current_node,current_node.getYes())
-      puts "advanceLeft"
-      game.advanceLeft() 
-      
-      
-    end
-  else  # player answered no to question
-    puts "player answered no"
-    if (!game.state().isLeaf()) # not at a leaf means we're at a branch
-      #self.play_game_from_node(current_node,current_node.getNo())
-      puts "advanceRight"
-      game.advanceRight()
-      
-    else  # uh-oh.  got to the end of the questions and did not find the animal
-      puts "need to get a new question"
-      ###self.get_new_question_for_node(parent_node,current_node)
-      game.get_new_question_for_node()
+  while (!finishedGame) do
+    print game.currentQuestion() + " > "
 
-      print "play again? > "
-      keepGoing = game.promptForYesNo()
-      if (!keepGoing)
-        exit
-      end   
+    answeredYes = game.promptForYesNo()
 
+#    print "game state = "
+#    print game.state().printString()
+#    print "\n"
+      
+    if answeredYes
+      if (game.state().isLeaf())  # yea!  we're done!
+        puts "I guessed correctly. I must be very smart."
+        finishedGame = true
+      else
+#        puts "advanceLeft"
+        game.advanceLeft()
+
+      end
+    else  # player answered no to question
+      puts "player answered no"
+      if (!game.state().isLeaf()) # not at a leaf means we're at a branch
+#        puts "advanceRight"
+        game.advanceRight()
+
+      else  # uh-oh.  got to the end of the questions and did not find the animal
+        puts "need to get a new question"
+        game.get_new_question_for_node()
+        finishedGame = true
+
+      end
     end
-  end  
-    
-  puts "exiting"
-  exit
-  
-  
-  
+  end
+
+  print "play again? > "
+  keepGoing = game.promptForYesNo()
+  if (!keepGoing)
+    exit
+  end
+
 end

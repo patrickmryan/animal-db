@@ -30,7 +30,7 @@ class GameNode
   
   def printString
     return self.class.name() +
-      " {id = #{@id}, left_id = #{@left_id}, right_id = #{@right_id}, text = #{@text}, parent_id = #{@parent_id}"
+      " {id = #{@id}, left_id = #{@left_id}, right_id = #{@right_id}, text = #{@text}}"
   end
   
   def getLeftNodeFromDB(db)
@@ -43,17 +43,15 @@ class GameNode
 
   def createInDB(adb)
     doc = self.doc()
-    puts "createInDB " + doc.to_s
+    #puts "createInDB " + doc.to_s
     adb.animaldb().save_doc(doc)
   end
   
   def updateInDB(adb)
     doc = self.doc()
-    puts "updateInDB " + doc.to_s
+    #puts "updateInDB " + doc.to_s
     
     oldDoc = adb.getDocFromId(doc['_id'])  # get the current doc, including version, so I can delete it
-    
-    #adb.animaldb().update_doc(doc)
     adb.animaldb().delete_doc(oldDoc)
     adb.animaldb().save_doc(doc)
 

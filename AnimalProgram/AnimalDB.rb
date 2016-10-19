@@ -29,17 +29,17 @@ class AnimalDB
 
   def getDocFromId(node_id)
 
-    puts "retrieving node with id ", node_id
+#    puts "retrieving node with id ", node_id
     doc = self.animaldb().get(node_id)
-    if (doc)
-      keys = ['_id', 'text', 'left_id', 'right_id']
-      keys.each do | key |
-        print key, " => ", doc[key], ", "
-      end
-      print "\n"
-    else
-      print "not found\n"
-    end
+#    if (doc)
+#      keys = ['_id', 'text', 'left_id', 'right_id']
+#      keys.each do | key |
+#        print key, " => ", doc[key], ", "
+#      end
+#      print "\n"
+#    else
+#      print "not found\n"
+#    end
 
     return doc
 
@@ -55,13 +55,15 @@ class AnimalDB
   end
   
   def nodeFromDoc(doc)
-    #node = nil
+#    puts "inside nodeFromDoc, id =   " + doc['_id'] + 
+#      ", left = " + doc['left_id'] + ", right = " + doc['right_id']
     if ((doc['left_id'] != '') || (doc['right_id'] != ''))  
       # if either of these is nonempty, then this is a branch
       node = BranchNode.new()
     else
       node = LeafNode.new()
     end
+#    puts "instantiated as " + node.class().to_s()
     
     node.id=(doc['_id'])
     node.left_id=(doc['left_id'])
@@ -112,10 +114,10 @@ class AnimalDB
     
     node0_doc = self.getRootNode()
     if (node0_doc == nil)
-      puts "node 0 not found, creating new tree"
+#      puts "node 0 not found, creating new tree"
       self.createNewTree()
     else
-      puts "node 0 found, not creating new tree"
+#      puts "node 0 found, not creating new tree"
     end
     
   end
@@ -124,7 +126,6 @@ class AnimalDB
   end
 
   def next_node_id
-    ##return Time.now().to_f().to_s()  # time now, in milliseconds
     return self.server().next_uuid()
     
   end
