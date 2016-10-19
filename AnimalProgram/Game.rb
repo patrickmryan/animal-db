@@ -61,6 +61,90 @@ class Game
   end
     
 
+  def get_new_question_for_node
+    # need to prompt for a new question and then edit the tree
+    # we'll end up with two new nodes, a question node and an animal node
+   
+    lastAnimalName = self.state().current_node().text()
+    
+    puts "I don't know what animal you're thinking of. Help me update my database."
+    print "Please type in the name of the animal > "
+
+    newAnimalName = gets.chomp()  # delete newline
+    #newAnimalNode = AnimalNode.new(name)
+    
+    print "You will need to type in a question that will distinguish between "
+    #print lastAnimalNode.articleAndName()
+    print lastAnimalName
+    print " and "
+    #print newAnimalNode.articleAndName() 
+    print newAnimalName + ".\n"
+    
+    puts "The question should be TRUE for one animal and FALSE for the other."
+    puts "After you enter the question, I will ask for which animal the question is true."
+    print "> "
+
+    newQuestion = gets.chomp()
+    #newQuestionNode = QuestionNode.new(q)
+
+    print "\nIs this question true for " + newAnimalNode.articleAndName() + "?"
+    
+    #exit
+    trueForNewAnimal = self.promptForYesNo()
+    
+    self.updateTree(newAnimalName,newQuestion,trueForNewAnimal)
+    
+#    if (self.promptForYesNo())
+#      # true means question is true for the new animal
+#      newQuestionNode.setYes(newAnimalNode)
+#      newQuestionNode.setNo(lastAnimalNode)  
+#    else
+#      # false means the question is true for the existing animal
+#      newQuestionNode.setYes(lastAnimalNode)
+#      newQuestionNode.setNo(newAnimalNode)
+#    end
+#
+#    # splice the two new nodes into the tree
+#    parent.replaceExistingNodeWith(lastAnimalNode,newQuestionNode)
+    
+  end
+  
+  def updateTree(newAnimalName,newQuestion,trueForNewAnimal)
+    newNodeId = self.adb().next_node_id()
+    
+    last_animal_node = self.state().current_node()
+    last_question_node = self.state().parent_node()
+    
+    new_animal = LeafNode()
+    newAnimalId = self.adb().next_node_id()
+    new_animal.id=(newAnimalId)
+    new_animal.text=(newAnimalName)
+    
+    new_question = BranchNode()
+    newQuestionId = self.adb().next_node_id()
+    new_question.id=(newQuestionId)
+    new_question.text=(newQuestion)
+    
+    
+    # put updateInDB(),createInDB() in GameNode
+    # 3 updates [2 creates, one update]
+    
+    
+    if (trueForNewAnimal)
+      new_question.left_id=(newAnimalId)
+      new_question.right_id=(last_animal_node.id())
+      last_question_node.left_id=(newQuestionId)
+    else
+      new_question.left_id=(last_animal_node.id())
+      new_question.right_id=(newAnimalId)
+      last_question_node.right_id=(newQuestionId)
+    end
+    
+  end
+  
+  new_animal.createInDB(self.adb())
+  new_question.createInDB(self.adb())
+  last_question_node.updateInDB(self.adb())
   
 end
 
@@ -93,6 +177,7 @@ loop do
     else  # uh-oh.  got to the end of the questions and did not find the animal
       puts "need to get a new question"
       ###self.get_new_question_for_node(parent_node,current_node)
+      game.get_new_question_for_node()
       
       # get text
       

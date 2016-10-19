@@ -63,7 +63,14 @@ class GameNode
 #     
 #   end
   
-  
+  def doc
+    return {
+          '_id' => self.id(),
+          'text' => self.text(),
+          'left_id' => self.left_id(),
+          'right_id' => self.right_id()
+        }
+  end
   
   def to_s
     return this.printString()
@@ -82,5 +89,13 @@ class GameNode
     return db.getNodeFromId(self.right_id())
   end
 
+  def createInDB(db)
+    db.save_doc(self.doc())
+  end
+  
+  def updateInDB(db)
+    db.update_doc(self.doc())
+  end
+  
     
 end
