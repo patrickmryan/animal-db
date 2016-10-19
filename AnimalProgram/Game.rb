@@ -148,6 +148,7 @@ class Game
     new_animal.createInDB(self.adb())
     new_question.createInDB(self.adb())
     last_question_node.updateInDB(self.adb())
+    ##last_question_node.createInDB(self.adb())
 
     end
   
