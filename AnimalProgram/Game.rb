@@ -71,28 +71,39 @@ game.initializeGame()
 loop do
   print game.currentQuestion() + " > "
   
-  
   answeredYes = game.promptForYesNo()
+  
   if answeredYes
     if (game.state().isLeaf())  # yea!  we're done!
       puts "I guessed correctly. I must be very smart."
     else
       #self.play_game_from_node(current_node,current_node.getYes())
+      puts "advanceLeft"
       game.advanceLeft() 
       
       
     end
   else  # player answered no to question
+    puts "player answered no"
     if (!game.state().isLeaf()) # not at a leaf means we're at a branch
-      self.play_game_from_node(current_node,current_node.getNo())
+      #self.play_game_from_node(current_node,current_node.getNo())
+      puts "advanceRight"
+      game.advanceRight()
       
     else  # uh-oh.  got to the end of the questions and did not find the animal
-      self.get_new_question_for_node(parent_node,current_node)
-
+      puts "need to get a new question"
+      ###self.get_new_question_for_node(parent_node,current_node)
+      
+      # get text
+      
+      # give to game to do update
+      
+      #exit
     end
   end  
     
-  
+  puts "exiting"
+  exit
   
   
   

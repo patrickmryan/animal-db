@@ -13,7 +13,7 @@ class GameState
   end
   
   def isLeaf
-    return this.current_node().isLeaf()
+    return self.current_node().isLeaf()
   end
   
   #def moveCurrentToParent
@@ -21,6 +21,10 @@ class GameState
   #end
   
   def advanceTo(nextNode)
+      print self.printString()
+      print " advanceTo " + nextNode.printString() + "\n"
+    
+    
       self.parent_node=(self.current_node())
       self.current_node=(nextNode)      
   end

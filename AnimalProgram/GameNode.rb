@@ -11,10 +11,10 @@ class GameNode
     @text = ''
   end
   
-  def initialize(anId)
-    self.initialize()
-    self.id=(anId)
-  end
+#  def initialize(anId)
+#    self.initialize()
+#    self.id=(anId)
+#  end
   
   attr_accessor :id, :left_id, :right_id, :parent_id, :text
   
@@ -65,7 +65,9 @@ class GameNode
   
   
   
-  
+  def to_s
+    return this.printString()
+  end
   
   def printString
     return self.class.name() +

@@ -55,7 +55,7 @@ class AnimalDB
   end
   
   def nodeFromDoc(doc)
-    node = nil
+    #node = nil
     if ((doc['left_id'] != '') || (doc['right_id'] != ''))  
       # if either of these is nonempty, then this is a branch
       node = BranchNode.new()
