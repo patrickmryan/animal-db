@@ -60,6 +60,18 @@ class Game
     self.state().advanceTo(self.state().current_node().getRightNodeFromDB(self.adb()))
   end
     
+  
+  
+  def wordWithArticle(word)
+ 
+    if (word =~ /^[aeiou]/i)  # word starts with a vowel
+       article = "an"
+     else
+      article = "a"
+     end
+    return article + " " + word
+  end
+  
 
   def get_new_question_for_node
     # need to prompt for a new question and then edit the tree
@@ -71,23 +83,19 @@ class Game
     print "Please type in the name of the animal > "
 
     newAnimalName = gets.chomp()  # delete newline
-    #newAnimalNode = AnimalNode.new(name)
     
     print "You will need to type in a question that will distinguish between "
-    #print lastAnimalNode.articleAndName()
-    print lastAnimalName
+    print self.wordWithArticle(lastAnimalName)
     print " and "
-    #print newAnimalNode.articleAndName() 
-    print newAnimalName + ".\n"
+    print self.wordWithArticle(newAnimalName) + ".\n"
     
     puts "The question should be TRUE for one animal and FALSE for the other."
     puts "After you enter the question, I will ask for which animal the question is true."
     print "> "
 
     newQuestion = gets.chomp()
-    #newQuestionNode = QuestionNode.new(q)
-
-    print "\nIs this question true for " + newAnimalNode.articleAndName() + "?"
+ 
+    print "\nIs this question true for " + self.wordWithArticle(newAnimalName) + "?"
     
     #exit
     trueForNewAnimal = self.promptForYesNo()
@@ -115,19 +123,15 @@ class Game
     last_animal_node = self.state().current_node()
     last_question_node = self.state().parent_node()
     
-    new_animal = LeafNode()
+    new_animal = LeafNode.new()
     newAnimalId = self.adb().next_node_id()
     new_animal.id=(newAnimalId)
     new_animal.text=(newAnimalName)
     
-    new_question = BranchNode()
+    new_question = BranchNode.new()
     newQuestionId = self.adb().next_node_id()
     new_question.id=(newQuestionId)
     new_question.text=(newQuestion)
-    
-    
-    # put updateInDB(),createInDB() in GameNode
-    # 3 updates [2 creates, one update]
     
     
     if (trueForNewAnimal)
@@ -140,11 +144,12 @@ class Game
       last_question_node.right_id=(newQuestionId)
     end
     
-  end
-  
-  new_animal.createInDB(self.adb())
-  new_question.createInDB(self.adb())
-  last_question_node.updateInDB(self.adb())
+    # now persist the updates
+    new_animal.createInDB(self.adb())
+    new_question.createInDB(self.adb())
+    last_question_node.updateInDB(self.adb())
+
+    end
   
 end
 
@@ -153,6 +158,7 @@ game = Game.new()
 game.initializeGame()
 
 loop do
+  puts "Starting the Animal game"
   print game.currentQuestion() + " > "
   
   answeredYes = game.promptForYesNo()
@@ -178,12 +184,13 @@ loop do
       puts "need to get a new question"
       ###self.get_new_question_for_node(parent_node,current_node)
       game.get_new_question_for_node()
-      
-      # get text
-      
-      # give to game to do update
-      
-      #exit
+
+      print "play again? > "
+      keepGoing = game.promptForYesNo()
+      if (!keepGoing)
+        exit
+      end   
+
     end
   end  
     

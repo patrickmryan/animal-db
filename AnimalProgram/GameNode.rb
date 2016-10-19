@@ -89,12 +89,16 @@ class GameNode
     return db.getNodeFromId(self.right_id())
   end
 
-  def createInDB(db)
-    db.save_doc(self.doc())
+  def createInDB(adb)
+    doc = self.doc()
+    puts "createInDB " + doc.to_s
+    adb.animaldb().save_doc(doc)
   end
   
-  def updateInDB(db)
-    db.update_doc(self.doc())
+  def updateInDB(adb)
+    doc = self.doc()
+    puts "updateInDB " + doc.to_s
+    adb.animaldb().update_doc(doc)
   end
   
     
