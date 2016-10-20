@@ -25,7 +25,7 @@ class Game
     aState.current_node=(left)
     self.state=(aState)
     
-    #puts self.state().printString()
+    #puts self.state().to_s()
     
   end
   

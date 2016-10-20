@@ -11,10 +11,8 @@ class GameNode
     @text = ''
   end
   
-  
   attr_accessor :id, :left_id, :right_id, :parent_id, :text
-  
-  
+   
   def doc
     return {
           '_id' => self.id(),
@@ -24,15 +22,11 @@ class GameNode
         }
   end
   
-  def to_s
-    return this.printString()
-  end
-  
   def questionText
     return self.text()
   end
   
-  def printString
+  def to_s
     return self.class.name() +
       " {id = #{@id}, left_id = #{@left_id}, right_id = #{@right_id}, text = #{@text}}"
   end
