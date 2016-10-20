@@ -89,7 +89,7 @@ class AnimalDB
     node1_id = self.next_node_id()
     node1 = {
       '_id' => node1_id,
-      'text' => 'Is it a cat',
+      'text' => 'cat',
       'left_id' => '',
       'right_id' => ''
     }

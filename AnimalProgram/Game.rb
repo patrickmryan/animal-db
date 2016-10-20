@@ -30,7 +30,7 @@ class Game
   end
   
   def currentQuestion
-    return self.state().current_node().text()
+    return self.state().current_node().questionText()
   end
   
   def promptForYesNo
@@ -89,14 +89,15 @@ class Game
 
     newQuestion = gets.chomp()
  
-    print "\nIs this question true for " + self.wordWithArticle(newAnimalName) + "?"
+    anAnimal = self.wordWithArticle(newAnimalName)
+    print "\nIs this question true for " + anAnimal + "?"
     
     trueForNewAnimal = self.promptForYesNo()
     
+    #theText = "Is it #{@anAnimal}?"
+    #puts "New question is \"#{@theText}\""
     self.updateTree(newAnimalName,newQuestion,trueForNewAnimal)
-    
-
-    
+       
   end
   
   def updateTree(newAnimalName,newQuestion,trueForNewAnimal)
@@ -155,31 +156,22 @@ loop do
   finishedGame = false
   
   while (!finishedGame) do
-    print game.currentQuestion() + " > "
+    print game.currentQuestion() + "? "
 
     answeredYes = game.promptForYesNo()
-
-#    print "game state = "
-#    print game.state().printString()
-#    print "\n"
-      
+    
     if answeredYes
       if (game.state().isLeaf())  # yea!  we're done!
         puts "I guessed correctly. I must be very smart."
         finishedGame = true
       else
-#        puts "advanceLeft"
         game.advanceLeft()
-
       end
     else  # player answered no to question
-      puts "player answered no"
       if (!game.state().isLeaf()) # not at a leaf means we're at a branch
-#        puts "advanceRight"
         game.advanceRight()
 
       else  # uh-oh.  got to the end of the questions and did not find the animal
-        puts "need to get a new question"
         game.get_new_question_for_node()
         finishedGame = true
 
@@ -187,7 +179,7 @@ loop do
     end
   end
 
-  print "play again? > "
+  print "do you want to play again? "
   keepGoing = game.promptForYesNo()
   if (!keepGoing)
     exit

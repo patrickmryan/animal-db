@@ -28,6 +28,10 @@ class GameNode
     return this.printString()
   end
   
+  def questionText
+    return self.text()
+  end
+  
   def printString
     return self.class.name() +
       " {id = #{@id}, left_id = #{@left_id}, right_id = #{@right_id}, text = #{@text}}"
