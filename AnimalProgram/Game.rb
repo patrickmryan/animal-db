@@ -156,7 +156,12 @@ class Player
       finishedGame = false
 
       while (!finishedGame) do
-        print game.currentQuestion() + "? "
+
+        q = game.currentQuestion()
+        if (q !~ /\?$/)
+          q = q+"?"
+        end
+        print q
 
         answeredYes = game.promptForYesNo()
 
