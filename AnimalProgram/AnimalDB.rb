@@ -27,10 +27,7 @@ class AnimalDB
   attr_accessor :animaldb, :server
 
   def getDocFromId(node_id)
-    doc = self.animaldb().get(node_id)
-
-    return doc
-
+    return self.animaldb().get(node_id)
   end
   
   def getNodeFromId(node_id)
