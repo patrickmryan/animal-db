@@ -1,20 +1,19 @@
 require 'rubygems'
 require 'couchrest'
 require './GameNode.rb'
-require './BranchNode.rb'
-require './LeafNode.rb'
 
 class AnimalDB
   #
-  #  schema
+  # schema
   #    id
   #    text  (contains either the name of an animal or a question)
   #    left_id
   #    right_id
   #
-  #  root node has id == 0
+  # root node has id == 0
   #
-  #  Note: Arch. decision is to not read entire tree into memory.  Leave tree in db. Retrieve nodes as needed.
+  # Note: Arch. decision is to not read entire tree into memory.  Leave tree in db. 
+  # Retrieve nodes as needed.
   #
   #
 
@@ -28,18 +27,7 @@ class AnimalDB
   attr_accessor :animaldb, :server
 
   def getDocFromId(node_id)
-
-#    puts "retrieving node with id ", node_id
     doc = self.animaldb().get(node_id)
-#    if (doc)
-#      keys = ['_id', 'text', 'left_id', 'right_id']
-#      keys.each do | key |
-#        print key, " => ", doc[key], ", "
-#      end
-#      print "\n"
-#    else
-#      print "not found\n"
-#    end
 
     return doc
 
