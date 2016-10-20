@@ -7,10 +7,10 @@ class AnimalDB
   # schema
   #    id
   #    text  (contains either the name of an animal or a question)
-  #    left_id
-  #    right_id
+  #    left_id  (points to the Yes answer)
+  #    right_id (points to the No answer)
   #
-  # root node has id == 0
+  # root node has id == '0'
   #
   # Note: Arch. decision is to not read entire tree into memory.  Leave tree in db. 
   # Retrieve nodes as needed.
@@ -74,23 +74,35 @@ class AnimalDB
 
   
   def createNewTree
-    node1_id = self.next_node_id()
-    node1 = {
-      '_id' => node1_id,
-      'text' => 'cat',
-      'left_id' => '',
-      'right_id' => ''
-    }
-
-    node0 = {
-      '_id' => @ROOT_ID,
-      'text' => '',
-      'left_id' => node1_id,
-      'right_id' => ''
-    }
-
-    @animaldb.save_doc(node0)
-    @animaldb.save_doc(node1)
+#    node1_id = self.next_node_id()
+#    node1 = {
+#      '_id' => node1_id,
+#      'text' => 'cat',
+#      'left_id' => '',
+#      'right_id' => ''
+#    }
+#
+#    node0 = {
+#      '_id' => @ROOT_ID,
+#      'text' => '',
+#      'left_id' => node1_id,
+#      'right_id' => ''
+#    }
+#
+#    @animaldb.save_doc(node0)
+#    @animaldb.save_doc(node1)
+    
+    node1 = LeafNode.new()
+    node1.id=(self.next_node_id())
+    node1.text=('cat')
+    
+    node0 = BranchNode.new()
+    node0.id=(@ROOT_ID)
+    node0.left_id=(node1.id())
+    
+    node0.createInDB(self)
+    node1.createInDB(self)
+    
     
   end
 
