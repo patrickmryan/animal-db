@@ -54,6 +54,7 @@ class AnimalDB
     node.left_id=(doc['left_id'])
     node.right_id=(doc['right_id'])
     node.text=(doc['text'])
+    node.rev=(doc['_rev'])
     return node
     
   end

@@ -9,28 +9,37 @@ class GameNode
     @right_id = ''
     @parent_id = ''
     @text = ''
+    @rev = ''
   end
-  
-  attr_accessor :id, :left_id, :right_id, :parent_id, :text
-   
+
+  attr_accessor :id, :left_id, :right_id, :parent_id, :text, :rev
+
   def doc
-    return {
-          '_id' => self.id(),
-          'text' => self.text(),
-          'left_id' => self.left_id(),
-          'right_id' => self.right_id()
-        }
+    theDoc = {
+      '_id' => self.id(),
+      'text' => self.text(),
+      'left_id' => self.left_id(),
+      'right_id' => self.right_id()
+    }
+    
+    # only include _rev if it exists
+    r = self.rev()
+    if (r != '')
+      theDoc['_rev'] = r
+    end
+    
+    return theDoc
   end
-  
+
   def questionText
     return self.text()
   end
-  
+
   def to_s
     return self.class.name() +
-      " {id = #{@id}, left_id = #{@left_id}, right_id = #{@right_id}, text = #{@text}}"
+    " {id = #{@id}, left_id = #{@left_id}, right_id = #{@right_id}, text = #{@text}}"
   end
-  
+
   def getLeftNodeFromDB(db)
     return db.getNodeFromId(self.left_id())
   end
@@ -44,17 +53,20 @@ class GameNode
     #puts "createInDB " + doc.to_s
     adb.animaldb().save_doc(doc)
   end
-  
+
   def updateInDB(adb)
-    doc = self.doc()
-    #puts "updateInDB " + doc.to_s
+    oldDoc = adb.getDocFromId(self.id())
+    # need _rev so that I can update
+    self.rev=(oldDoc['_rev'])
+    newDoc = self.doc()
     
-    oldDoc = adb.getDocFromId(doc['_id'])  # get the current doc, including version, so I can delete it
-    adb.animaldb().delete_doc(oldDoc)
-    adb.animaldb().save_doc(doc)
+    #print "oldDoc = " + oldDoc.to_s + "\n" 
+    #print "newDoc = " + newDoc.to_s + "\n" 
+     
+    adb.animaldb().save_doc(newDoc)
 
   end
-      
+
 end
 
 class BranchNode < GameNode
@@ -64,7 +76,6 @@ class BranchNode < GameNode
 end
 
 class LeafNode < GameNode
-  
   def questionText
     word = self.text()
 
