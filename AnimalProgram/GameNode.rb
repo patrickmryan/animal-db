@@ -21,13 +21,13 @@ class GameNode
       'left_id' => self.left_id(),
       'right_id' => self.right_id()
     }
-    
+
     # only include _rev if it exists
     r = self.rev()
     if (r != '')
       theDoc['_rev'] = r
     end
-    
+
     return theDoc
   end
 
@@ -59,11 +59,35 @@ class GameNode
     # need _rev so that I can update
     self.rev=(oldDoc['_rev'])
     newDoc = self.doc()
-    
-    #print "oldDoc = " + oldDoc.to_s + "\n" 
-    #print "newDoc = " + newDoc.to_s + "\n" 
-     
+
+    #print "oldDoc = " + oldDoc.to_s + "\n"
+    #print "newDoc = " + newDoc.to_s + "\n"
+
     adb.animaldb().save_doc(newDoc)
+
+  end
+
+  def updateFromDoc(doc)
+    v = doc['_id']
+    if (!v.nil?)
+      self.id=(v)
+    end
+    v = doc['left_id']
+    if (!v.nil?)
+      self.left_id=(v)
+    end
+    v = doc['right_id']
+    if (!v.nil?)
+      self.right_id=(v)
+    end
+    v = doc['text']
+    if (!v.nil?)
+      self.text=(v)
+    end
+    v = doc['_rev']
+    if (!v.nil?)
+      self.rev=(v)
+    end
 
   end
 
