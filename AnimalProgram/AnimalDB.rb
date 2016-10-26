@@ -25,6 +25,10 @@ class AnimalDB
 
   attr_accessor :animaldb, :server
 
+  def serverURL
+    return 'https://814ab5b5-b609-48ad-a316-6b4d671dc9bb-bluemix.cloudant.com/'
+  end
+  
   def getDocFromId(node_id)
     return self.animaldb().get(node_id)
   end
@@ -64,30 +68,12 @@ class AnimalDB
   end
 
   def openDB
-    self.server=(CouchRest.new())
+    self.server=(CouchRest.new(self.serverURL()))
     @animaldb = self.server().database!(@ANIMALDB_NAME)
 
   end
 
   def createNewTree
-    #    node1_id = self.next_node_id()
-    #    node1 = {
-    #      '_id' => node1_id,
-    #      'text' => 'cat',
-    #      'left_id' => '',
-    #      'right_id' => ''
-    #    }
-    #
-    #    node0 = {
-    #      '_id' => @ROOT_ID,
-    #      'text' => '',
-    #      'left_id' => node1_id,
-    #      'right_id' => ''
-    #    }
-    #
-    #    @animaldb.save_doc(node0)
-    #    @animaldb.save_doc(node1)
-
     node1 = LeafNode.new()
     node1.id=(self.next_node_id())
     node1.text=('cat')
