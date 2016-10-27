@@ -26,7 +26,10 @@ class AnimalDB
   attr_accessor :animaldb, :server
 
   def serverURL
-    return 'https://814ab5b5-b609-48ad-a316-6b4d671dc9bb-bluemix.cloudant.com/'
+    #return 'https://814ab5b5-b609-48ad-a316-6b4d671dc9bb-bluemix.cloudant.com/'
+    
+    return 'https://814ab5b5-b609-48ad-a316-6b4d671dc9bb-bluemix:201f803ecbcb17255862ce2aa46bc9e9a6f3be0cabd0441d0d14ad86e0f419c3@814ab5b5-b609-48ad-a316-6b4d671dc9bb-bluemix.cloudant.com'
+    
   end
   
   def getDocFromId(node_id)
@@ -68,7 +71,9 @@ class AnimalDB
   end
 
   def openDB
-    self.server=(CouchRest.new(self.serverURL()))
+    url = self.serverURL()
+    #print "opening " + url + "\n"
+    self.server=(CouchRest.new(url))
     @animaldb = self.server().database!(@ANIMALDB_NAME)
 
   end
