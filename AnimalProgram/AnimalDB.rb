@@ -28,7 +28,9 @@ class AnimalDB
   def serverURL
     #return 'https://814ab5b5-b609-48ad-a316-6b4d671dc9bb-bluemix.cloudant.com/'
     
-    return 'https://814ab5b5-b609-48ad-a316-6b4d671dc9bb-bluemix:201f803ecbcb17255862ce2aa46bc9e9a6f3be0cabd0441d0d14ad86e0f419c3@814ab5b5-b609-48ad-a316-6b4d671dc9bb-bluemix.cloudant.com'
+    #return 'https://814ab5b5-b609-48ad-a316-6b4d671dc9bb-bluemix:201f803ecbcb17255862ce2aa46bc9e9a6f3be0cabd0441d0d14ad86e0f419c3@814ab5b5-b609-48ad-a316-6b4d671dc9bb-bluemix.cloudant.com'
+    
+    return "https://2d86c541-ddb2-4c7e-a594-e0de57b97af0-bluemix:5f46bdc73d62e5c2b58b7492c98f6ac9aad65f89f7e144bd424cf0aed8cfeccf@2d86c541-ddb2-4c7e-a594-e0de57b97af0-bluemix.cloudant.com"
     
   end
   
